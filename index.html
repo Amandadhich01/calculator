@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CalcPro — Advanced Scientific & Multi-Mode Calculator</title>
+  <meta name="description" content="Next-generation online scientific calculator with unit converters, financial tools, memory, audio feedback, and calculation history." />
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%3E<text y=%2226%22 font-size=%2228%22>🧮</text></svg>">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="app-brand">
+        <div class="brand-icon">🧮</div>
+        <span>CalcPro Suite</span>
+        <span class="live-badge">PRO</span>
+      </div>
+
+      <div class="header-controls">
+        <button id="soundToggleBtn" class="btn-icon" title="Toggle Button Sound">🔊</button>
+        <button id="themeToggleBtn" class="btn-icon" title="Toggle Dark/Light Mode">☀️</button>
+        <button id="historyToggleBtn" class="btn-icon" title="Calculation History">📜</button>
+      </div>
+    </header>
+
+    <!-- Mode Selector Tabs -->
+    <nav class="mode-tabs">
+      <button class="mode-tab active" data-mode="standard">
+        <span>🧮</span> Standard
+      </button>
+      <button class="mode-tab" data-mode="scientific">
+        <span>🔬</span> Scientific
+      </button>
+      <button class="mode-tab" data-mode="converter">
+        <span>📏</span> Converter
+      </button>
+      <button class="mode-tab" data-mode="financial">
+        <span>💼</span> Financial
+      </button>
+    </nav>
+
+    <!-- Main Calculator Body -->
+    <main class="calculator-card">
+
+      <!-- Display Screen (Standard & Scientific) -->
+      <section id="displaySection" class="calculator-display">
+        <div class="display-meta">
+          <div>
+            <span id="angleBadge" class="angle-badge" title="Click to toggle DEG / RAD">DEG</span>
+            <span id="memoryIndicator" class="memory-indicator" style="margin-left: 0.5rem;">M</span>
+          </div>
+          <div class="display-actions">
+            <button id="copyResultBtn" class="display-action-btn" title="Copy Result">📋 Copy</button>
+            <button id="backspaceBtn" class="display-action-btn" title="Backspace">⌫</button>
+          </div>
+        </div>
+
+        <div id="displayExpression" class="display-expression"></div>
+        <div id="displayResult" class="display-result">0</div>
+      </section>
+
+      <!-- Memory Keys Row -->
+      <section id="memorySection" class="memory-row">
+        <button class="btn-mem" data-action="mem" data-val="MC">MC</button>
+        <button class="btn-mem" data-action="mem" data-val="MR">MR</button>
+        <button class="btn-mem" data-action="mem" data-val="M+">M+</button>
+        <button class="btn-mem" data-action="mem" data-val="M-">M-</button>
+        <button class="btn-mem" data-action="mem" data-val="MS">MS</button>
+      </section>
+
+      <!-- Standard Keypad -->
+      <div id="standardKeypad" class="keypad-grid keypad-standard">
+        <button class="calc-btn btn-clear" data-action="clear">AC</button>
+        <button class="calc-btn btn-fn" data-action="toggle-sign">+/−</button>
+        <button class="calc-btn btn-fn" data-action="percent">%</button>
+        <button class="calc-btn btn-op" data-action="op" data-val="÷">÷</button>
+
+        <button class="calc-btn btn-num" data-action="num" data-val="7">7</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="8">8</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="9">9</button>
+        <button class="calc-btn btn-op" data-action="op" data-val="×">×</button>
+
+        <button class="calc-btn btn-num" data-action="num" data-val="4">4</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="5">5</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="6">6</button>
+        <button class="calc-btn btn-op" data-action="op" data-val="−">−</button>
+
+        <button class="calc-btn btn-num" data-action="num" data-val="1">1</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="2">2</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="3">3</button>
+        <button class="calc-btn btn-op" data-action="op" data-val="+">+</button>
+
+        <button class="calc-btn btn-num btn-zero" data-action="num" data-val="0">0</button>
+        <button class="calc-btn btn-num" data-action="dot">.</button>
+        <button class="calc-btn btn-equals" data-action="equals">=</button>
+      </div>
+
+      <!-- Scientific Keypad -->
+      <div id="scientificKeypad" class="keypad-grid keypad-scientific" style="display: none;">
+        <!-- Row 1 -->
+        <button class="calc-btn btn-fn" data-action="fn" data-val="sin">sin</button>
+        <button class="calc-btn btn-fn" data-action="fn" data-val="cos">cos</button>
+        <button class="calc-btn btn-fn" data-action="fn" data-val="tan">tan</button>
+        <button class="calc-btn btn-fn" data-action="paren" data-val="(">(</button>
+        <button class="calc-btn btn-fn" data-action="paren" data-val=")">)</button>
+
+        <!-- Row 2 -->
+        <button class="calc-btn btn-fn" data-action="fn" data-val="asin">sin⁻¹</button>
+        <button class="calc-btn btn-fn" data-action="fn" data-val="acos">cos⁻¹</button>
+        <button class="calc-btn btn-fn" data-action="fn" data-val="atan">tan⁻¹</button>
+        <button class="calc-btn btn-fn" data-action="constant" data-val="pi">π</button>
+        <button class="calc-btn btn-fn" data-action="constant" data-val="e">e</button>
+
+        <!-- Row 3 -->
+        <button class="calc-btn btn-fn" data-action="fn" data-val="sq">x²</button>
+        <button class="calc-btn btn-fn" data-action="fn" data-val="pow">xʸ</button>
+        <button class="calc-btn btn-fn" data-action="fn" data-val="sqrt">√x</button>
+        <button class="calc-btn btn-clear" data-action="clear">AC</button>
+        <button class="calc-btn btn-op" data-action="op" data-val="÷">÷</button>
+
+        <!-- Row 4 -->
+        <button class="calc-btn btn-fn" data-action="fn" data-val="log">log</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="7">7</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="8">8</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="9">9</button>
+        <button class="calc-btn btn-op" data-action="op" data-val="×">×</button>
+
+        <!-- Row 5 -->
+        <button class="calc-btn btn-fn" data-action="fn" data-val="ln">ln</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="4">4</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="5">5</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="6">6</button>
+        <button class="calc-btn btn-op" data-action="op" data-val="−">−</button>
+
+        <!-- Row 6 -->
+        <button class="calc-btn btn-fn" data-action="fn" data-val="fact">n!</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="1">1</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="2">2</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="3">3</button>
+        <button class="calc-btn btn-op" data-action="op" data-val="+">+</button>
+
+        <!-- Row 7 -->
+        <button class="calc-btn btn-fn" data-action="fn" data-val="inv">1/x</button>
+        <button class="calc-btn btn-num" data-action="num" data-val="0">0</button>
+        <button class="calc-btn btn-num" data-action="dot">.</button>
+        <button class="calc-btn btn-fn" data-action="toggle-sign">+/−</button>
+        <button class="calc-btn btn-equals" data-action="equals">=</button>
+      </div>
+
+      <!-- Unit Converter View -->
+      <div id="converterView" class="converter-container" style="display: none;">
+        <div class="converter-type-selector">
+          <button class="conv-type-pill active" data-type="length">📏 Length</button>
+          <button class="conv-type-pill" data-type="mass">⚖️ Weight</button>
+          <button class="conv-type-pill" data-type="temperature">🌡️ Temp</button>
+          <button class="conv-type-pill" data-type="storage">💾 Storage</button>
+          <button class="conv-type-pill" data-type="speed">⚡ Speed</button>
+          <button class="conv-type-pill" data-type="time">⏱️ Time</button>
+        </div>
+
+        <div class="converter-card">
+          <div class="converter-row">
+            <label class="form-label">From</label>
+            <div class="converter-input-wrap">
+              <input type="number" id="convVal1" class="converter-input" value="1" placeholder="Enter value" />
+              <select id="convUnit1" class="converter-select"></select>
+            </div>
+          </div>
+
+          <button id="convSwapBtn" class="converter-swap-btn" title="Swap Units">⇅</button>
+
+          <div class="converter-row">
+            <label class="form-label">To</label>
+            <div class="converter-input-wrap">
+              <input type="number" id="convVal2" class="converter-input" placeholder="Result" />
+              <select id="convUnit2" class="converter-select"></select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Financial Tools View -->
+      <div id="financialView" class="financial-container" style="display: none;">
+        <div class="tool-selector">
+          <button id="tool-tab-emi" class="tool-pill active" onclick="switchTool('emi')">🏦 Loan EMI</button>
+          <button id="tool-tab-gst" class="tool-pill" onclick="switchTool('gst')">📊 GST / Tax</button>
+          <button id="tool-tab-discount" class="tool-pill" onclick="switchTool('discount')">🏷️ Discount</button>
+        </div>
+
+        <!-- Loan EMI Tool -->
+        <div id="emiBox" class="tool-box">
+          <div class="form-field">
+            <label class="form-label">Loan Amount ($ / ₹)</label>
+            <input type="number" id="emiPrincipal" class="form-input" value="50000" oninput="calculateEMI()" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Annual Interest Rate (%)</label>
+            <input type="number" id="emiRate" class="form-input" value="8.5" step="0.1" oninput="calculateEMI()" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Tenure (Months)</label>
+            <input type="number" id="emiTenure" class="form-input" value="36" oninput="calculateEMI()" />
+          </div>
+
+          <div class="result-card">
+            <div class="result-row">
+              <span>Monthly EMI:</span>
+              <strong id="emiMonthly">$0.00</strong>
+            </div>
+            <div class="result-row">
+              <span>Total Interest Payable:</span>
+              <strong id="emiTotalInterest">$0.00</strong>
+            </div>
+            <div class="result-row highlight">
+              <span>Total Amount:</span>
+              <strong id="emiTotalPayment">$0.00</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- GST Tool -->
+        <div id="gstBox" class="tool-box" style="display: none;">
+          <div class="form-field">
+            <label class="form-label">Original Amount ($ / ₹)</label>
+            <input type="number" id="gstAmount" class="form-input" value="1000" oninput="calculateGST()" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">GST Rate (%)</label>
+            <input type="number" id="gstRate" class="form-input" value="18" oninput="calculateGST()" />
+          </div>
+
+          <div class="result-card">
+            <div class="result-row">
+              <span>GST Amount:</span>
+              <strong id="gstTaxAmount">$0.00</strong>
+            </div>
+            <div class="result-row highlight">
+              <span>Gross Total Amount:</span>
+              <strong id="gstTotalAmount">$0.00</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Discount Tool -->
+        <div id="discountBox" class="tool-box" style="display: none;">
+          <div class="form-field">
+            <label class="form-label">Original Price ($ / ₹)</label>
+            <input type="number" id="discOriginal" class="form-input" value="120" oninput="calculateDiscount()" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Discount Percentage (%)</label>
+            <input type="number" id="discPercent" class="form-input" value="25" oninput="calculateDiscount()" />
+          </div>
+
+          <div class="result-card">
+            <div class="result-row">
+              <span>You Save:</span>
+              <strong id="discSavings" style="color: var(--danger);">$0.00</strong>
+            </div>
+            <div class="result-row highlight">
+              <span>Final Price:</span>
+              <strong id="discFinal">$0.00</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide-Over History Drawer -->
+      <aside id="historyDrawer" class="history-drawer">
+        <div class="history-header">
+          <div class="history-title">
+            <span>📜</span> Calculation History
+          </div>
+          <button id="closeHistoryBtn" class="btn-icon" style="width: 28px; height: 28px;">✕</button>
+        </div>
+
+        <div id="historyList" class="history-list"></div>
+
+        <div class="history-footer">
+          <button id="clearHistoryBtn" class="btn-clear-hist">Clear History</button>
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- App Footer -->
+    <footer class="app-footer">
+      <div>CalcPro Suite by <a href="https://github.com/Amandadhich01" target="_blank">Aman Dadhich</a> • Deployed on GitHub Pages</div>
+    </footer>
+  </div>
+
+  <!-- Toast Notification Box -->
+  <div id="toastBox" class="toast-box"></div>
+
+  <!-- JavaScript -->
+  <script src="js/calculator.js"></script>
+</body>
+</html>
