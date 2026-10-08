@@ -229,6 +229,11 @@ function switchMode(mode) {
     if (el) el.style.display = 'none';
   });
 
+  const appContainer = document.getElementById('appContainer');
+  if (appContainer) {
+    appContainer.classList.toggle('wide', mode === 'scientific');
+  }
+
   if (mode === 'standard') {
     if (displaySection) displaySection.style.display = 'flex';
     if (memorySection) memorySection.style.display = 'grid';
@@ -241,10 +246,6 @@ function switchMode(mode) {
     if (displaySection) displaySection.style.display = 'none';
     if (memorySection) memorySection.style.display = 'none';
     if (converterView) converterView.style.display = 'flex';
-  } else if (mode === 'financial') {
-    if (displaySection) displaySection.style.display = 'none';
-    if (memorySection) memorySection.style.display = 'none';
-    if (financialView) financialView.style.display = 'flex';
   }
 }
 
